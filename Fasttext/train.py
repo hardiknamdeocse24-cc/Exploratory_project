@@ -1,0 +1,17 @@
+cfg_ft = Config()
+cfg_ft.set("languages.source",          "bho")
+cfg_ft.set("languages.target",          "hin")
+cfg_ft.set("data.parallel_corpus_path", PARALLEL_TSV)
+cfg_ft.set("embedding.model_type",      "fasttext")
+cfg_ft.set("embedding.dimension",       100)
+cfg_ft.set("embedding.min_n",           3)
+cfg_ft.set("embedding.max_n",           6)
+cfg_ft.set("mapping.method",            "orthogonal")
+cfg_ft.set("dictionary.top_k",          10)
+cfg_ft.set("dictionary.use_csls",       True)
+
+pipe_ft = EmbeddingPipeline(cfg_ft)
+res_ft  = pipe_ft.run()
+FT_DICT = f"{OUT}/dict_fasttext.json"
+pipe_ft.generate_dictionary(FT_DICT)
+print(f"FastText dictionary: {len(res_ft['dictionary'])} entries")
