@@ -1,0 +1,18 @@
+cfg_tfm = Config()
+cfg_tfm.set("languages.source",              "bho")
+cfg_tfm.set("languages.target",              "hin")
+cfg_tfm.set("data.parallel_corpus_path",     PARALLEL_TSV)
+cfg_tfm.set("embedding.model_type",          "transformer")
+cfg_tfm.set("embedding.transformer_model",   "google/muril-base-cased")
+cfg_tfm.set("embedding.dimension",           768)
+cfg_tfm.set("embedding.batch_size",          32)
+cfg_tfm.set("embedding.max_seq_length",      128)
+cfg_tfm.set("mapping.method",                "orthogonal")
+cfg_tfm.set("dictionary.top_k",              10)
+cfg_tfm.set("dictionary.use_csls",           True)
+
+pipe_tfm = EmbeddingPipeline(cfg_tfm)
+res_tfm  = pipe_tfm.run()
+TFM_DICT = f"{OUT}/dict_transformer.json"
+pipe_tfm.generate_dictionary(TFM_DICT)
+print(f"Transformer dictionary: {len(res_tfm['dictionary'])} entries")
